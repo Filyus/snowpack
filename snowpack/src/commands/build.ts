@@ -22,6 +22,7 @@ import {
 } from '../types';
 import {deleteFromBuildSafe, isPathImport, isRemoteUrl} from '../util';
 import {startServer} from './dev';
+import {config} from 'node:process';
 
 function getIsHmrEnabled(config: SnowpackConfig) {
   return config.buildOptions.watch && !!config.devOptions.hmr;
@@ -58,7 +59,7 @@ async function installOptimizedDependencies(
   const baseInstallOptions = {
     dest: installDest,
     external: commandOptions.config.packageOptions.external,
-    env: {NODE_ENV: process.env.NODE_ENV || 'production'},
+    env: {NODE_ENV: commandOptions.config.mode},
     treeshake: commandOptions.config.buildOptions.watch
       ? false
       : commandOptions.config.optimize?.treeshake !== false,
